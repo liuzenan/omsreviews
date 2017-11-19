@@ -1,0 +1,349 @@
+<!doctype html>
+<html>
+<head>
+    <title>GTOMS Course Reviews</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>GTOMS Course Reviews</h1>
+
+        <table id="courses-summary" class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Dept.</th>
+                    <th>Number</th>
+                    <th>Name</th>
+                    <th>Reviews</th>
+                    <th>Avg. Rating</th>
+                    <th>Avg. Difficulty</th>
+                    <th>Avg. Workload</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+
+<div class="modal fade" id="reviewsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <script id="template-courses-summary-item" type="text/template">
+      <tr data-toggle="modal" data-target="#reviewsModal">
+        <td data-type='dept'></td>
+        <td data-type='number'></td>
+        <td data-type='name'></td>
+        <td data-type='reviewCount'></td>
+        <td data-type='rating'></td>
+        <td data-type='difficulty'></td>
+        <td data-type='workload'></td>
+      </tr>
+    </script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+    <script type='text/javascript' src='https://unpkg.com/fetch-jsonp@1.1.1'></script>
+    <script src="GetSheetDone.js"></script>
+    <script>
+        courseInfo = {
+            '6035' : {
+                name : 'Intro to Information Security',
+                dept : 'CS',
+                foundational : true
+            },
+            '6210' : {
+                name : 'Advanced Operating Systems',
+                dept : 'CS',
+                foundational : true
+            },
+            '6220' : {
+                name : 'Intro to High-Performance Computing',
+                dept : 'CSE',
+                foundational : true
+            },
+            '6242' : {
+                name : 'Data & Visual Analytics',
+                dept : 'CSE',
+                foundational : true
+            },
+            '6250' : {
+                name : 'Computer Networks',
+                dept : 'CS',
+                foundational : true
+            },
+            '6200' : {
+                name : 'Introduction to Operating Systems',
+                dept : 'CS',
+                foundational : true
+            },
+            '6262' : {
+                name : 'Network Security',
+                dept : 'CS',
+                foundational : true
+            },
+            '6290' : {
+                name : 'High Performance Computer Architecture',
+                dept : 'CS',
+                foundational : true
+            },
+            '6291' : {
+                name : 'Embedded Systems Optimization',
+                dept : 'CS',
+                foundational : true
+            },
+            '6300' : {
+                name : 'Software Development Process',
+                dept : 'CS',
+                foundational : true
+            },
+            '6310' : {
+                name : 'Software Architecture and Design',
+                dept : 'CS',
+                foundational : true
+            },
+            '6340' : {
+                name : 'Software Analysis and Test',
+                dept : 'CS',
+                foundational : true
+            },
+            '6400' : {
+                name : 'Database Systems Concepts and Design',
+                dept : 'CS',
+                foundational : true
+            },
+            '6440' : {
+                name : 'Intro to Health Informatics',
+                dept : 'CS',
+                foundational : true
+            },
+            '6460' : {
+                name : 'Educational Technology',
+                dept : 'CS',
+                foundational : true
+            },
+            '6475' : {
+                name : 'Computational Photography',
+                dept : 'CS',
+                foundational : true
+            },
+            '6476' : {
+                name : 'Computer Vision',
+                dept : 'CS',
+                foundational : true
+            },
+            '6601' : {
+                name : 'Artificial Intelligence',
+                dept : 'CS',
+                foundational : true
+            },
+            '6750' : {
+                name : 'Human-Computer Interaction',
+                dept : 'CS',
+                foundational : false
+            },
+            '7637' : {
+                name : 'Knowledge-Based Artificial Intelligence: Cognitive Systems',
+                dept : 'CS',
+                foundational : true
+            },
+            '7641' : {
+                name : 'Machine Learning',
+                dept : 'CS',
+                foundational : true
+            },
+            '7642' : {
+                name : 'Reinforcement Learning',
+                dept : 'CS',
+                foundational : true
+            },
+            '7646' : {
+                name : 'Machine Learning for Trading',
+                dept : 'CS',
+                foundational : true
+            },
+            '8803-GA' : {
+                name : 'Graduate Algorithms',
+                dept : 'CS',
+                foundational : true
+            },
+            '6505' : {
+                name : 'Computability, Complexity & Algorithms',
+                dept : 'CS',
+                foundational : true
+            },
+            '6505' : {
+                name : 'Computability, Complexity & Algorithms',
+                dept : 'CS',
+                foundational : true
+            },
+            '8803-007' : {
+                name : 'Cyber-Physical Systems Security',
+                dept : 'CS',
+                foundational : false
+            },
+            '8803-003' : {
+                name : 'Reinforcement Learning',
+                dept : 'CS',
+                foundational : true
+            },
+            '8803-001' : {
+                name : 'Artificial Intelligence for Robotics',
+                dept : 'CS',
+                foundational : true
+            },
+            '8803-002' : {
+                name : 'Introduction to Operating Systems',
+                dept : 'CS',
+                foundational : true
+            },
+            '8803-008' : {
+                name : 'Compilers - Theory and Practice',
+                dept : 'CS',
+                foundational : false
+            },
+            '8803-BDHI' : {
+                name : 'Big Data for Health Informatics',
+                dept : 'CS',
+                foundational : true
+            },
+
+        }
+        const $key = '1uXKqG8Q7ul9BSFy3bieLFEttml5M70smeZvOAl1lWoU',
+            $sheetNum = 1;
+        let key,
+            sheetNum,
+            courses = {};
+            
+        function readValues() {
+            key = $key;
+            sheetNum =$sheetNum;
+        }
+
+        function parseReviews(data) {
+            for (var i = data.length - 1; i >= 0; i--) {
+                row = data[i];
+                var courseID = row.course;
+                if (!(courseID in courses)) {
+                    courses[courseID] = {}
+                    courses[courseID].reviews = [];
+                }
+
+                courses[courseID].reviews.push({
+                    content: row.content,
+                    difficulty: parseInt(row.difficulty),
+                    hoursperweek: parseInt(row.hoursperweek),
+                    rating: parseInt(row.rating),
+                    semester: row.semester
+                });
+            }
+        }
+
+        function calculateSummary() {
+            for (var k in courses) {
+                if (courses.hasOwnProperty(k)) {
+                    var courseReviews = courses[k].reviews;
+                    var difficultySum, hoursperweekSum, ratingSum;
+                    var reviewCount = courseReviews.length;
+
+                    difficultySum = hoursperweekSum = ratingSum = 0;
+                    for (var i = courseReviews.length - 1; i >= 0; i--) {
+                        var review = courseReviews[i]
+                        difficultySum += review.difficulty;
+                        hoursperweekSum += review.hoursperweek;
+                        ratingSum += review.rating;
+                    }
+                    courses[k].difficulty = difficultySum / reviewCount;
+                    courses[k].workload = hoursperweekSum / reviewCount;
+                    courses[k].rating = ratingSum / reviewCount;
+                }
+            }
+        }
+
+        function renderSummary() {
+
+            var template = $('#template-courses-summary-item').html();
+
+            for (var k in courses) {
+                if (courses.hasOwnProperty(k)) {
+                    var course = courses[k]
+                    var info = courseInfo[k]
+                    var reviewCount = course.reviews.length
+                    var tableRow = $($.parseHTML(template));
+                    if (info) {
+                        tableRow.find("td[data-type='dept']").html(info.dept);
+                        tableRow.find("td[data-type='name']").html(info.name);
+                    }
+                    tableRow.find("td[data-type='number']").html(k);
+                    tableRow.find("td[data-type='reviewCount']").html(reviewCount);
+                    tableRow.find("td[data-type='rating']").html(course.rating.toFixed(1));
+                    tableRow.find("td[data-type='workload']").html(course.workload.toFixed(1));
+                    tableRow.find("td[data-type='difficulty']").html(course.difficulty.toFixed(1));
+                    $('#courses-summary > tbody').append(tableRow);
+                }
+            }
+
+            $('#courses-summary').DataTable({
+                paging: false
+            });
+        }
+
+        $('#reviewsModal').on('show.bs.modal', function (event) {
+          var row = $(event.relatedTarget) // Button that triggered the modal
+          var courseID = row.find("td[data-type='number']").html() // Extract info from data-* attributes
+          var modal = $(this);
+          var course = courses[courseID];
+          var info = courseInfo[courseID];
+          var reviews = course.reviews;
+
+          modal.find('.modal-title').text(info.dept+courseID+' '+info.name);
+
+          modal.find('.modal-body').html('');
+          for (var i = reviews.length - 1; i >= 0; i--) {
+              var review = reviews[i]
+              modal.find('.modal-body').append('<div class="review-content-item">'+ review.content  +'</div>')
+          }
+        })
+
+        $(document).ready(function() {
+            readValues();
+            console.log(key, sheetNum);
+
+            let promise = GetSheetDone.labeledCols(key, sheetNum);
+
+            promise.then((data) => {
+                parseReviews(data.data);
+                calculateSummary();
+                renderSummary();
+
+            }).catch(err => {
+                console.log('Error');
+                console.log(err);
+            })
+        })
+    </script>
+</body>
+</html>
