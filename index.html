@@ -315,6 +315,7 @@
           var row = $(event.relatedTarget) // Button that triggered the modal
           var courseID = row.find("td[data-type='number']").html() // Extract info from data-* attributes
           var modal = $(this);
+
           var course = courses[courseID];
           var info = courseInfo[courseID];
           var reviews = course.reviews;
@@ -326,6 +327,11 @@
               var review = reviews[i]
               modal.find('.modal-body').append('<div class="review-content-item">'+ review.content  +'</div>')
           }
+        })
+
+        $('#reviewsModal').on('shown.bs.modal', function (e) {
+            var modal = $(this);
+            modal.scrollTop(0)
         })
 
         $(document).ready(function() {
