@@ -1,3 +1,11 @@
+.container h1 {
+	margin-top: 1em;
+}
+
+#courses-summary tbody tr {
+	cursor: pointer;
+}
+
 .review-content-item {
 	padding: 2em 0;
 	border-bottom: 1px solid #E0E0E0;
